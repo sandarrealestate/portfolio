@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khin Khin Sint's Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAF9F6;
+            color: #4A3B2C;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-myanmar-title {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Smooth Custom Scrollbar - Bright Gold Theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF9F6;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #FFD700;
+            border-radius: 10px;
+        }
+
+        /* Business Card 3D Flip Mechanics */
+        .card-container {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1580/995;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -5px rgba(212, 136, 6, 0.2);
+            border: 2px solid rgba(255, 215, 0, 0.5);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Ambient glowing effects - Bright Gold */
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FFD700, #FFE55C, #D48806);
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .glow-effect:hover::before {
+            opacity: 0.6;
+        }
+
+        /* Door Animation Styles - Restored to Initial */
+        .door-panel {
+            transition: transform 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+            will-change: transform;
+        }
+
+        .door-open-left {
+            transform: translateX(-100%);
+        }
+
+        .door-open-right {
+            transform: translateX(100%);
+        }
+
+        /* Traditional Gold Text Gradient */
+        .text-gold-gradient {
+            background: linear-gradient(to right, #B37400, #FFD700, #B37400);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen flex flex-col items-center justify-start antialiased px-4 sm:px-6 py-6 selection:bg-[#FFD700] selection:text-white relative">
+
+    <!-- Auto Opening Door Animation Overlay -->
+    <div id="door-overlay"
+        class="fixed top-0 left-0 w-full h-[100dvh] z-[100] flex items-center justify-center overflow-hidden pointer-events-none">
+        <!-- Left Door -->
+        <div id="door-left"
+            class="door-panel absolute top-0 left-0 w-1/2 h-full bg-[#FAF9F6] border-r-2 border-[#FFD700] shadow-[10px_0_30px_rgba(0,0,0,0.15)] z-20 overflow-hidden">
+            <div
+                class="absolute inset-0 w-full h-full opacity-60 pointer-events-none bg-[url('door_pattern.png')] bg-cover bg-center bg-no-repeat">
+            </div>
+        </div>
+
+        <!-- Right Door -->
+        <div id="door-right"
+            class="door-panel absolute top-0 right-0 w-1/2 h-full bg-[#FAF9F6] border-l-2 border-[#FFD700] shadow-[-10px_0_30px_rgba(0,0,0,0.15)] z-20 overflow-hidden">
+            <div
+                class="absolute inset-0 w-full h-full opacity-60 pointer-events-none bg-[url('door_pattern.png')] bg-cover bg-center bg-no-repeat scale-x-[-1]">
+            </div>
+        </div>
+    </div>
+    <!-- End Door Animation -->
+
+    <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-72 bg-gradient-to-b from-[#FFD700]/20 to-transparent blur-3xl pointer-events-none">
+    </div>
+
+    <main
+        class="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-3xl border-2 border-[#FFD700]/40 shadow-[0_10px_40px_-10px_rgba(255,215,0,0.2)] p-6 relative overflow-hidden my-auto">
+
+        <!-- မြန်မာဆန်ဆန် Floral Corners (Fixed Mirroring) -->
+        <img src="floral_corner.png"
+            class="absolute top-0 left-0 w-24 h-24 sm:w-32 sm:h-32 opacity-80 pointer-events-none object-contain drop-shadow-sm"
+            alt="Corner TL">
+        <img src="floral_corner.png"
+            class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 opacity-80 pointer-events-none object-contain scale-x-[-1] drop-shadow-sm"
+            alt="Corner TR">
+        <img src="floral_corner.png"
+            class="absolute bottom-0 left-0 w-24 h-24 sm:w-32 sm:h-32 opacity-80 pointer-events-none object-contain scale-y-[-1] drop-shadow-sm"
+            alt="Corner BL">
+        <img src="floral_corner.png"
+            class="absolute bottom-0 right-0 w-24 h-24 sm:w-32 sm:h-32 opacity-80 pointer-events-none object-contain scale-x-[-1] scale-y-[-1] drop-shadow-sm"
+            alt="Corner BR">
+
+        <section class="flex flex-col items-center text-center mt-6 relative z-10">
+
+            <!-- Flanked Profile Layout -->
+            <div class="flex items-center justify-center gap-2 sm:gap-4 w-full mt-4">
+                <!-- Left Pattern 1 -->
+                <div class="w-20 sm:w-28 shrink-0 flex items-center justify-center">
+                    <img src="pattern1.png" class="w-full h-auto object-contain" alt="Left Flourish">
+                </div>
+
+                <!-- Enlarged Profile Picture Container -->
+                <div
+                    class="relative group p-1.5 rounded-full bg-gradient-to-r from-[#FFD700] via-[#FFE55C] to-[#D48806] shadow-[0_5px_20px_rgba(255,215,0,0.4)] transition-transform duration-300 hover:scale-105 shrink-0 z-10">
+                    <div
+                        class="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden bg-[#FAF9F6] border-2 border-white">
+                        <img id="profile-pic" src="profile.jpg" alt="Profile Photo"
+                            class="w-full h-full object-cover onerror-fallback">
+                        <div id="avatar-fallback"
+                            class="w-full h-full flex items-center justify-center bg-gray-100 text-[#FFD700]">
+                            <i class="fa-regular fa-user text-4xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Pattern 1 (Mirrored) -->
+                <div class="w-20 sm:w-28 shrink-0 flex items-center justify-center">
+                    <img src="pattern1.png" class="w-full h-auto object-contain scale-x-[-1]" alt="Right Flourish">
+                </div>
+            </div>
+
+            <h1 class="mt-6 text-3xl font-bold text-gold-gradient font-myanmar-title tracking-wide">Hlaing Sandar Win
+            </h1>
+            <p class="text-sm font-bold text-[#B37400] mt-2 tracking-wider">
+                အိမ်ခြံမြေအကျိုးဆောင်
+            </p>
+            <p class="text-xs font-semibold text-[#8C5E00] mt-1">
+                Myanmar Real Property Development Association<br>(MRPDA) အသင်းဝင်
+            </p>
+
+            <p class="mt-4 text-sm text-[#5C4A3D] px-4 leading-relaxed font-medium">
+                အိမ်ခြံမြေ ရောင်း/ဝယ်/ငှား လုပ်ငန်းများနှင့်ပတ်သက်၍ ယုံကြည်စိတ်ချစွာဆက်သွယ်‌‌ဆောင်ရွက်နိုင်ပါသည်။
+            </p>
+
+            <button onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' })"
+                class="w-full flex items-center justify-center gap-2 py-3.5 bg-gradient-to-r from-[#FFD700] to-[#D48806] hover:from-[#E6C200] hover:to-[#B37400] active:scale-[0.99] text-white font-semibold rounded-2xl shadow-lg transition-all duration-200 mt-5 text-sm">
+                <i class="fa-solid fa-user-plus"></i> Contact Now
+            </button>
+        </section>
+
+        <section class="mt-10 relative z-10">
+            <div class="flex justify-between items-center mb-3 px-1">
+                <h2 class="text-xs font-bold text-[#B37400] uppercase tracking-widest">Member Card</h2>
+                <span class="text-xs text-[#D48806] flex items-center gap-1 animate-pulse font-semibold">
+                    <i class="fa-solid fa-rotate"></i> Tap to flip
+                </span>
+            </div>
+
+            <div class="card-container group" onclick="toggleCardFlip()">
+                <div id="biz-card-inner" class="card-inner">
+
+                    <div
+                        class="card-front bg-gradient-to-br from-[#FAF9F6] to-[#FDFBF7] flex items-center justify-center p-5">
+                        <img src="card_front1.jpg" alt="Card Front"
+                            class="w-full h-full object-cover rounded-2xl shadow-sm">
+                    </div>
+
+                    <div
+                        class="card-back bg-gradient-to-bl from-[#FDFBF7] via-[#FFF8E7] to-[#FAF9F6] flex items-center justify-center p-5">
+                        <img src="card_back.jpg" alt="Card Back"
+                            class="w-full h-full object-cover rounded-2xl shadow-sm">
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-8 relative z-10">
+            <div
+                class="p-5 rounded-2xl bg-gradient-to-br from-[#FFF8E7] to-white border border-[#FFD700]/40 shadow-sm relative overflow-hidden">
+                <h2 class="text-lg font-bold mb-3 text-[#4A3B2C] relative z-10 font-myanmar-title">
+                    <i class="fa-solid fa-circle-info text-[#FFD700] mr-1"></i> Information
+                </h2>
+                <p class="text-sm text-[#5C4A3D] leading-relaxed font-medium relative z-10">
+                    စလစ်မှ ဂရန်ထုတ်ခြင်း ၊ သက်တမ်းတိုးခြင်း ၊ အမည်ပြောင်းခြင်း ၊ အခြားနည်းသုံးလျှောက်ခြင်းများကိုလည်း
+                    ဝန်ဆောင်မှုပေးပါသည်။
+                </p><br>
+                <p class="text-sm text-[#5C4A3D] leading-relaxed font-medium relative z-10">
+                    မှတ်ပုံတင်လက်မှတ်ဖြင့် တရားဝင်လုပ်ကိုင်‌ဆောင်ရွက်သောကြောင့် ရာနှုန်းပြည့်ယုံကြည်စိတ်ချနိုင်ပါသည်။
+                </p>
+            </div>
+        </section>
+
+        <section class="mt-8 relative z-10">
+            <h2 class="text-xs font-bold text-[#B37400] uppercase tracking-widest mb-3">
+                မှတ်ပုံတင်လက်မှတ်
+            </h2>
+            <div class="overflow-hidden rounded-2xl border-2 border-[#FFD700]/30 bg-white shadow-sm p-1">
+                <img src="document.jpg" alt="Certificate" class="w-full h-auto object-contain rounded-xl">
+            </div>
+        </section>
+
+        <br><br><br>
+        <p class="text-sm font-bold text-center text-[#D48806] mt-1 underline decoration-[#FFD700] relative z-10">
+            အိမ်ခြံမြေဝန်ဆောင်မှုများအတွက် ယခုပဲဆက်သွယ်လိုက်ပါ👇🏻
+        </p>
+
+        <section class="mt-8 space-y-3 relative z-10 mb-8" id="contact-section">
+            <h2 class="text-xs font-bold text-[#B37400] uppercase tracking-widest mb-2 px-1">Quick Actions</h2>
+
+            <!-- Hotline -->
+            <a href="tel:09788580837"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFF8E7] border border-[#FFD700]/40 rounded-2xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center text-[#D48806] border border-[#FFD700]/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-xs text-[#B37400] font-semibold">Direct Hotline</p>
+                        <p class="text-sm font-bold text-[#4A3B2C]">09 7885 80837</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#FFD700] group-hover:text-[#D48806] transition-colors text-xs"></i>
+            </a>
+
+            <!-- Email -->
+            <a href="mailto:shwe14111990@gmail.com"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFF8E7] border border-[#FFD700]/40 rounded-2xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center text-[#D48806] border border-[#FFD700]/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="text-left min-w-0">
+                        <p class="text-xs text-[#B37400] font-semibold">Email Address</p>
+                        <p class="text-sm font-bold text-[#4A3B2C] break-all">shwe14111990@gmail.com</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#FFD700] group-hover:text-[#D48806] transition-colors text-xs"></i>
+            </a>
+
+            <!-- Telegram -->
+            <a href="tg://resolve?domain=sandar_Real_Estate" target="_blank"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFF8E7] border border-[#FFD700]/40 rounded-2xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center text-[#D48806] border border-[#FFD700]/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-telegram text-lg"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-xs text-[#B37400] font-semibold">Telegram</p>
+                        <p class="text-sm font-bold text-[#4A3B2C]">@sandar_Real_Estate</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#FFD700] group-hover:text-[#D48806] transition-colors text-xs"></i>
+            </a>
+
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/share/1EN4pDcE8E/?mibextid=wwXIfr" target="_blank"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFF8E7] border border-[#FFD700]/40 rounded-2xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center text-[#D48806] border border-[#FFD700]/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-xs text-[#B37400] font-semibold">Facebook</p>
+                        <p class="text-sm font-bold text-[#4A3B2C]">Visit Profile</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#FFD700] group-hover:text-[#D48806] transition-colors text-xs"></i>
+            </a>
+
+            <!-- Viber -->
+            <a href="https://viber.click/959788580837" target="_blank"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFF8E7] border border-[#FFD700]/40 rounded-2xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-xl bg-[#FFD700]/10 flex items-center justify-center text-[#D48806] border border-[#FFD700]/20 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-viber text-lg"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-xs text-[#B37400] font-semibold">Viber</p>
+                        <p class="text-sm font-bold text-[#4A3B2C]">Visit Profile</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#FFD700] group-hover:text-[#D48806] transition-colors text-xs"></i>
+            </a>
+        </section>
+
+    </main>
+
+    <script>
+        // Opening Door Animation Logic
+        function openDoors() {
+            const leftDoor = document.getElementById('door-left');
+            const rightDoor = document.getElementById('door-right');
+            const overlay = document.getElementById('door-overlay');
+
+            // Add sliding classes
+            leftDoor.classList.add('door-open-left');
+            rightDoor.classList.add('door-open-right');
+
+            // Remove overlay entirely after animation completes
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1800);
+        }
+
+        // Auto trigger the door opening 1 second (1000ms) after the page loads
+        window.addEventListener('load', () => {
+            setTimeout(openDoors, 1000);
+        });
+
+        // Interactive 3D Card Flip
+        function toggleCardFlip() {
+            const card = document.getElementById('biz-card-inner');
+            card.parentElement.classList.toggle('flipped');
+        }
+
+        // Automatic Image Fallback Handler
+        document.addEventListener("DOMContentLoaded", function () {
+            const img = document.getElementById('profile-pic');
+            const fallback = document.getElementById('avatar-fallback');
+
+            if (!img.getAttribute('src') || img.getAttribute('src') === "") {
+                img.style.display = 'none';
+                fallback.style.display = 'flex';
+            } else {
+                img.onload = function () {
+                    fallback.style.display = 'none';
+                };
+                img.onerror = function () {
+                    img.style.display = 'none';
+                    fallback.style.display = 'flex';
+                };
+            }
+        });
+    </script>
+</body>
+
+</html>

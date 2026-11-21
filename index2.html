@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khin Khin Sint's Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --gold-light: #FCF6BA;
+            --gold-mid: #D4AF37;
+            --gold-dark: #BF953F;
+            --brown-deep: #3E2723;
+            --brown-mid: #5C4A3D;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FAF9F6;
+            color: var(--brown-deep);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-elegant {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Metallic Gold Text Gradient */
+        .text-metallic-gold {
+            background: linear-gradient(to right, var(--gold-dark), var(--gold-light), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0px 1px 1px rgba(255, 255, 255, 0.5);
+        }
+
+        /* Metallic Gold Background Gradient */
+        .bg-metallic-gold {
+            background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 50%, #B38728 100%);
+        }
+
+        /* Smooth Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #FAF9F6;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold-mid);
+            border-radius: 10px;
+        }
+
+        /* Business Card 3D Flip */
+        .card-container {
+            perspective: 1000px;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: auto;
+            aspect-ratio: 1580/995;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+
+        .card-container.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front,
+        .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 10px 30px -5px rgba(191, 149, 63, 0.3);
+            border: 2px solid var(--gold-mid);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+        }
+
+        /* Door Animation */
+        .door-panel {
+            transition: transform 1.8s cubic-bezier(0.77, 0, 0.175, 1);
+            will-change: transform;
+        }
+
+        .door-open-left {
+            transform: translateX(-100%);
+        }
+
+        .door-open-right {
+            transform: translateX(100%);
+        }
+
+        /* Hover Glow */
+        .glow-effect {
+            position: relative;
+        }
+
+        .glow-effect::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gold-mid), var(--gold-light), var(--gold-dark));
+            border-radius: inherit;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .glow-effect:hover::before {
+            opacity: 0.5;
+        }
+
+        /* Decorative Ribbons (CSS Trick to mimic the business card) */
+        .ribbon-top-right {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, transparent 50%, var(--gold-light) 50%, var(--gold-mid) 80%, var(--gold-dark) 100%);
+            border-radius: 50%;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .ribbon-bottom-left {
+            position: absolute;
+            bottom: -20px;
+            left: -20px;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(315deg, transparent 50%, var(--gold-light) 50%, var(--gold-mid) 80%, var(--gold-dark) 100%);
+            border-radius: 50%;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body
+    class="min-h-screen flex flex-col items-center justify-start antialiased px-4 sm:px-6 py-6 selection:bg-[#D4AF37] selection:text-white relative">
+
+    <!-- Door Animation Overlay -->
+    <div id="door-overlay"
+        class="fixed top-0 left-0 w-full h-[100dvh] z-[100] flex items-center justify-center overflow-hidden pointer-events-none">
+        <div id="door-left"
+            class="door-panel absolute top-0 left-0 w-1/2 h-full bg-[#FAF9F6] border-r-4 border-[#D4AF37] shadow-[10px_0_30px_rgba(0,0,0,0.15)] z-20 overflow-hidden">
+            <div
+                class="absolute inset-0 w-full h-full opacity-60 pointer-events-none bg-[url('door_pattern.png')] bg-cover bg-center bg-no-repeat">
+            </div>
+        </div>
+        <div id="door-right"
+            class="door-panel absolute top-0 right-0 w-1/2 h-full bg-[#FAF9F6] border-l-4 border-[#D4AF37] shadow-[-10px_0_30px_rgba(0,0,0,0.15)] z-20 overflow-hidden">
+            <div
+                class="absolute inset-0 w-full h-full opacity-60 pointer-events-none bg-[url('door_pattern.png')] bg-cover bg-center bg-no-repeat scale-x-[-1]">
+            </div>
+        </div>
+    </div>
+
+    <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-md h-72 bg-gradient-to-b from-[#D4AF37]/20 to-transparent blur-3xl pointer-events-none">
+    </div>
+
+    <!-- Main Container -->
+    <main
+        class="w-full max-w-md bg-white rounded-2xl border-2 border-[#D4AF37] shadow-[0_15px_50px_-10px_rgba(191,149,63,0.3)] p-6 relative overflow-hidden my-auto">
+
+        <!-- Gold Ribbon Accents -->
+        <div class="ribbon-top-right"></div>
+        <div class="ribbon-bottom-left"></div>
+
+        <!-- Floral Corners (Perfectly Mirrored) -->
+        <img src="floral_corner.png"
+            class="absolute top-0 left-0 w-24 h-24 sm:w-32 sm:h-32 opacity-90 pointer-events-none object-contain z-0"
+            alt="Corner TL">
+        <img src="floral_corner.png"
+            class="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 opacity-90 pointer-events-none object-contain scale-x-[-1] z-0"
+            alt="Corner TR">
+        <img src="floral_corner.png"
+            class="absolute bottom-0 left-0 w-24 h-24 sm:w-32 sm:h-32 opacity-90 pointer-events-none object-contain scale-y-[-1] z-0"
+            alt="Corner BL">
+        <img src="floral_corner.png"
+            class="absolute bottom-0 right-0 w-24 h-24 sm:w-32 sm:h-32 opacity-90 pointer-events-none object-contain scale-x-[-1] scale-y-[-1] z-0"
+            alt="Corner BR">
+
+        <section class="flex flex-col items-center text-center mt-6 relative z-10">
+
+            <!-- Profile & Side Florals -->
+            <div class="flex items-center justify-center gap-2 sm:gap-4 w-full mt-4">
+                <!-- Left Pattern -->
+                <div class="w-16 sm:w-24 shrink-0 flex items-center justify-center">
+                    <img src="pattern1.png" class="w-full h-auto object-contain filter drop-shadow-md"
+                        alt="Left Flourish">
+                </div>
+
+                <!-- Profile Frame (Thick Gold Ring) -->
+                <div
+                    class="relative group p-2 rounded-full bg-metallic-gold shadow-[0_5px_20px_rgba(191,149,63,0.5)] transition-transform duration-300 hover:scale-105 shrink-0 z-10">
+                    <div
+                        class="w-32 h-32 sm:w-40 sm:h-40 rounded-full overflow-hidden bg-white border-[3px] border-white relative">
+                        <img id="profile-pic" src="profile.jpg" alt="Profile Photo"
+                            class="w-full h-full object-cover onerror-fallback">
+                        <div id="avatar-fallback"
+                            class="w-full h-full flex items-center justify-center bg-gray-100 text-[#D4AF37]">
+                            <i class="fa-regular fa-user text-4xl"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Pattern (Mirrored) -->
+                <div class="w-16 sm:w-24 shrink-0 flex items-center justify-center">
+                    <img src="pattern1.png" class="w-full h-auto object-contain scale-x-[-1] filter drop-shadow-md"
+                        alt="Right Flourish">
+                </div>
+            </div>
+
+            <h1 class="mt-6 text-3xl font-elegant font-bold text-metallic-gold tracking-wide">Khin Khin Sint</h1>
+
+            <!-- Diamond Divider -->
+            <div class="flex items-center justify-center w-full my-3 px-8">
+                <div class="h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent flex-1"></div>
+                <div class="w-2.5 h-2.5 rotate-45 bg-[#D4AF37] mx-2 shadow-sm"></div>
+                <div class="h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent flex-1"></div>
+            </div>
+
+            <p class="text-sm font-bold text-[#5C4A3D] tracking-wider">
+                အိမ်ခြံမြေအကျိုးဆောင်
+            </p>
+            <p class="text-xs font-semibold text-[#8C5E00] mt-1">
+                Myanmar Real Property Development Association<br>(MRPDA) အသင်းဝင်
+            </p>
+
+            <p class="mt-4 text-sm text-[#5C4A3D] px-4 leading-relaxed font-medium">
+                အိမ်ခြံမြေ ရောင်း/ဝယ်/ငှား လုပ်ငန်းများနှင့်ပတ်သက်၍ ယုံကြည်စိတ်ချစွာဆက်သွယ်‌‌ဆောင်ရွက်နိုင်ပါသည်။
+            </p>
+
+            <button onclick="document.getElementById('contact-section').scrollIntoView({ behavior: 'smooth' })"
+                class="w-full flex items-center justify-center gap-2 py-3.5 bg-metallic-gold hover:brightness-110 active:scale-[0.99] text-[#3E2723] font-bold rounded-xl shadow-[0_5px_15px_rgba(191,149,63,0.4)] transition-all duration-200 mt-6 text-sm border border-[#FCF6BA]">
+                <i class="fa-solid fa-user-plus"></i> Contact Now
+            </button>
+        </section>
+
+        <!-- Member Card Section -->
+        <section class="mt-10 relative z-10">
+            <div class="flex justify-between items-center mb-3 px-1">
+                <h2 class="text-xs font-bold text-[#BF953F] uppercase tracking-widest">Member Card</h2>
+                <span class="text-xs text-[#D4AF37] flex items-center gap-1 animate-pulse font-semibold">
+                    <i class="fa-solid fa-rotate"></i> Tap to flip
+                </span>
+            </div>
+
+            <div class="card-container group" onclick="toggleCardFlip()">
+                <div id="biz-card-inner" class="card-inner">
+                    <!-- Front -->
+                    <div class="card-front bg-white flex flex-col justify-between p-5 text-left relative">
+                        <div
+                            class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-bl from-[#FCF6BA] to-transparent opacity-30 rounded-bl-full pointer-events-none">
+                        </div>
+                        <div class="flex justify-between items-start">
+                            <img src="card_front1.png" alt="Card Front" class="rounded-xl shadow-sm">
+                        </div>
+                        <div class="z-10 mt-auto bg-white/80 p-2 rounded-lg border border-[#D4AF37]/30">
+                            <h3 class="text-lg font-bold text-[#3E2723] tracking-wide font-elegant">Khin Khin Sint</h3>
+                            <p class="text-xs text-[#BF953F] font-semibold">Real Estate Agent</p>
+                        </div>
+                    </div>
+
+                    <!-- Back -->
+                    <div class="card-back bg-white flex flex-col justify-between p-5 text-left relative">
+                        <div
+                            class="absolute bottom-0 left-0 w-32 h-32 bg-gradient-to-tr from-[#FCF6BA] to-transparent opacity-30 rounded-tr-full pointer-events-none">
+                        </div>
+                        <img src="card_back.png" alt="Card Back" class="rounded-xl shadow-sm relative z-10">
+
+                        <div class="flex justify-between items-center z-10 mt-2">
+                            <span class="text-xs font-bold tracking-wider text-[#BF953F] font-mono">CONNECT NOW</span>
+                            <i class="fa-solid fa-qrcode text-[#3E2723] text-lg"></i>
+                        </div>
+
+                        <div
+                            class="grid grid-cols-1 gap-2 z-10 my-auto text-[11px] text-[#5C4A3D] font-mono font-medium">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-phone text-[#D4AF37] w-4"></i>
+                                <span>+95 9 4300 7811</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fa-solid fa-envelope text-[#D4AF37] w-4"></i>
+                                <span>khinkhinsint0943007811@gmail.com</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Info Section -->
+        <section class="mt-8 relative z-10">
+            <div class="p-5 rounded-xl bg-[#FFFDF7] border border-[#D4AF37]/40 shadow-sm relative overflow-hidden">
+                <h2 class="text-lg font-bold mb-3 text-[#3E2723] relative z-10 font-elegant">
+                    <i class="fa-solid fa-circle-info text-[#D4AF37] mr-1"></i> Information
+                </h2>
+                <p class="text-sm text-[#5C4A3D] leading-relaxed font-medium relative z-10">
+                    စလစ်မှ ဂရန်ထုတ်ခြင်း ၊ သက်တမ်းတိုးခြင်း ၊ အမည်ပြောင်းခြင်း ၊ အခြားနည်းသုံးလျှောက်ခြင်းများကိုလည်း
+                    ဝန်ဆောင်မှုပေးပါသည်။
+                </p>
+                <div class="h-px bg-[#D4AF37]/30 my-2"></div>
+                <p class="text-sm text-[#5C4A3D] leading-relaxed font-medium relative z-10">
+                    မှတ်ပုံတင်လက်မှတ်ဖြင့် တရားဝင်လုပ်ကိုင်‌ဆောင်ရွက်သောကြောင့် ရာနှုန်းပြည့်ယုံကြည်စိတ်ချနိုင်ပါသည်။
+                </p>
+            </div>
+        </section>
+
+        <!-- Certificate Section -->
+        <section class="mt-8 relative z-10">
+            <h2 class="text-xs font-bold text-[#BF953F] uppercase tracking-widest mb-3">
+                မှတ်ပုံတင်လက်မှတ်
+            </h2>
+            <div class="overflow-hidden rounded-xl border-2 border-[#D4AF37]/50 bg-white p-1 shadow-md">
+                <img src="document.jpg" alt="Certificate" class="w-full h-auto object-contain rounded-lg">
+            </div>
+        </section>
+
+        <br><br>
+        <p
+            class="text-sm font-bold text-center text-[#BF953F] mt-1 underline decoration-[#D4AF37] decoration-2 underline-offset-4 relative z-10">
+            အိမ်ခြံမြေဝန်ဆောင်မှုများအတွက် ယခုပဲဆက်သွယ်လိုက်ပါ👇🏻
+        </p>
+
+        <!-- Contact Section -->
+        <section class="mt-8 space-y-3 relative z-10 mb-8" id="contact-section">
+            <h2 class="text-xs font-bold text-[#BF953F] uppercase tracking-widest mb-2 px-1">Quick Actions</h2>
+
+            <!-- Hotline -->
+            <a href="tel:0943007811"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFFDF7] border border-[#D4AF37]/40 rounded-xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-full bg-metallic-gold flex items-center justify-center text-[#3E2723] shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-[10px] text-[#BF953F] font-bold uppercase tracking-wider">Direct Hotline</p>
+                        <p class="text-sm font-bold text-[#3E2723]">09 4300 7811</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#D4AF37] group-hover:text-[#3E2723] transition-colors text-xs"></i>
+            </a>
+
+            <!-- Telegram -->
+            <a href="https://t.me/TS7523" target="_blank" rel="noopener noreferrer"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFFDF7] border border-[#D4AF37]/40 rounded-xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-full bg-metallic-gold flex items-center justify-center text-[#3E2723] shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-telegram text-lg"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-[10px] text-[#BF953F] font-bold uppercase tracking-wider">Telegram</p>
+                        <p class="text-sm font-bold text-[#3E2723]">@TS7523</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#D4AF37] group-hover:text-[#3E2723] transition-colors text-xs"></i>
+            </a>
+
+            <!-- Viber -->
+            <a href="https://viber.click/95943007811" target="_blank"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFFDF7] border border-[#D4AF37]/40 rounded-xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-full bg-metallic-gold flex items-center justify-center text-[#3E2723] shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-viber text-lg"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-[10px] text-[#BF953F] font-bold uppercase tracking-wider">Viber</p>
+                        <p class="text-sm font-bold text-[#3E2723]">Visit Profile</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#D4AF37] group-hover:text-[#3E2723] transition-colors text-xs"></i>
+            </a>
+
+            <!-- Facebook -->
+            <a href="https://www.facebook.com/khinkhin.sint.54"
+                class="glow-effect flex items-center justify-between p-4 bg-white hover:bg-[#FFFDF7] border border-[#D4AF37]/40 rounded-xl transition-all duration-300 group shadow-sm">
+                <div class="flex items-center gap-4">
+                    <div
+                        class="w-10 h-10 rounded-full bg-metallic-gold flex items-center justify-center text-[#3E2723] shadow-sm group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-facebook-f"></i>
+                    </div>
+                    <div class="text-left">
+                        <p class="text-[10px] text-[#BF953F] font-bold uppercase tracking-wider">Facebook</p>
+                        <p class="text-sm font-bold text-[#3E2723]">Visit Profile</p>
+                    </div>
+                </div>
+                <i
+                    class="fa-solid fa-chevron-right text-[#D4AF37] group-hover:text-[#3E2723] transition-colors text-xs"></i>
+            </a>
+        </section>
+
+    </main>
+
+    <div class="text-[11px] text-[#BF953F] mt-4 text-center font-mono select-none">
+        Designed by Htet Aung Linn
+    </div>
+
+    <script>
+        // Door Animation
+        function openDoors() {
+            const leftDoor = document.getElementById('door-left');
+            const rightDoor = document.getElementById('door-right');
+            const overlay = document.getElementById('door-overlay');
+
+            leftDoor.classList.add('door-open-left');
+            rightDoor.classList.add('door-open-right');
+
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 1800);
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(openDoors, 1000);
+        });
+
+        // 3D Card Flip
+        function toggleCardFlip() {
+            const card = document.getElementById('biz-card-inner');
+            card.parentElement.classList.toggle('flipped');
+        }
+
+        // Profile Fallback
+        document.addEventListener("DOMContentLoaded", function () {
+            const img = document.getElementById('profile-pic');
+            const fallback = document.getElementById('avatar-fallback');
+
+            if (!img.getAttribute('src') || img.getAttribute('src') === "") {
+                img.style.display = 'none';
+                fallback.style.display = 'flex';
+            } else {
+                img.onload = function () { fallback.style.display = 'none'; };
+                img.onerror = function () {
+                    img.style.display = 'none';
+                    fallback.style.display = 'flex';
+                };
+            }
+        });
+    </script>
+</body>
+
+</html>
